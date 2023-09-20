@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Formik } from 'formik';
 import { Button, TextField, Card, Typography, CardContent } from '@mui/material';
+import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import './register.css'
 
@@ -12,7 +13,11 @@ const validationSchema = Yup.object().shape({
     password: Yup.string().required('Password is required'),
 });
 
-const RegisterForm: React.FC = () => {
+
+const RegisterForm = () => {
+
+  const navigate = useNavigate()
+
   const initialValues = {
     name: '',
     email: '',
@@ -38,7 +43,8 @@ const RegisterForm: React.FC = () => {
     } else {
       alert('Login failed. Please check your credentials.');
     }
-
+    
+    navigate('/login')
   };
 
   return (
@@ -110,6 +116,7 @@ const RegisterForm: React.FC = () => {
               </Button>
               <h4><span>OR</span></h4>              
               <Button
+                href='/'
                 type="submit"
                 variant="outlined"
                 color="primary"

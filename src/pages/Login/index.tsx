@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik';
 import { Button, TextField, Card, Typography, CardContent } from '@mui/material';
 import * as Yup from 'yup';
 import './login.css'
+import { useNavigate } from 'react-router-dom'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -11,12 +12,13 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-const LoginForm: React.FC = () => {
+
+const LoginForm = ()=> {
   const initialValues = {
     email: '',
     password: '',
   };
-
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (values : unknown) => {
@@ -33,6 +35,7 @@ const LoginForm: React.FC = () => {
 
     if (response.ok) {
       alert('Login successful, redirect to homepage.');
+      navigate('/')
     } else {
       alert('Login failed. Please check your credentials.');
     }
@@ -97,6 +100,7 @@ const LoginForm: React.FC = () => {
               </Button>
               <h4><span>OR</span></h4>
               <Button
+                href='/register'
                 variant="outlined"
                 color="primary"
                 disabled={isLoading || isSubmitting}
