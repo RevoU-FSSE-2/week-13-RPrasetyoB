@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import './login.css'
 import { useNavigate } from 'react-router-dom'
 import { ApiUrl } from '../../utils/api';
+import Swal from 'sweetalert2';
 
 
 const validationSchema = Yup.object().shape({
@@ -46,7 +47,7 @@ const LoginForm: React.FC = ()=> {
       console.log(response)
 
       if (response.ok) {
-        alert('Login successful, redirect to homepage.');
+        Swal.fire('Login successful, redirect to homepage.', 'success');
       
       const token = data.data.token
       localStorage.setItem('authToken', token)
@@ -119,7 +120,7 @@ const LoginForm: React.FC = ()=> {
               >
                 {isLoading ? 'Logging in...' : 'Login'}
               </Button>
-              <h4><span>OR</span></h4>
+              <h4><span>or</span></h4>
               <Button
                 href='/register'
                 variant="outlined"
