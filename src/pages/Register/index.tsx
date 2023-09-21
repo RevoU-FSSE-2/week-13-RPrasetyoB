@@ -4,48 +4,65 @@ import { Button, TextField, Card, Typography, CardContent } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import './register.css'
+import { ApiUrl } from '../../utils/api';
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is Required'),
     email: Yup.string()
         .email('Invalid email')
         .required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    password: Yup.string().min(5, 'Password must be at least 5 characters long')
+        // .matches(
+        //   /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{5,})/,
+        //   "Must Contain 5 Characters, One Alphabet and One Number")
+        .required('Password is required')
 });
 
+interface registerValue {
+  name: string,
+  email: string,
+  password: string
+}
 
-const RegisterForm = () => {
+const initialValues = {
+  name: '',
+  email: '',
+  password: '',
+};
+
+const RegisterForm: React.FC = () => {
 
   const navigate = useNavigate()
-
-  const initialValues = {
-    name: '',
-    email: '',
-    password: '',
-  };
-
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (values : unknown) => {
+  const handleSubmit = async (values : registerValue) => {
     setIsLoading(true);
 
-    const apiUrl = 'https://example.com/api/login';
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    });
-
-    if (response.ok) {
-      alert('Login successful, redirect to homepage.');
-    } else {
-      alert('Login failed. Please check your credentials.');
-    }
+    const Url = ApiUrl + '/user/register'
+    try {
+      const response = await fetch(Url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+      console.log(response)
+  
+      if (response.ok) {
+        alert('Register successful, redirect to loginpage.');
+        navigate('/login')
+      } else {
+        alert('Registration failed. Please check your data.');
+      }
+      
+      setIsLoading(false);
     
-    navigate('/login')
-  };
+    } catch (error) {
+      console.error('An error occurred:', error);
+      alert('An error occurred while processing your request. Please try again later.')
+    }
+  }     
 
   return (
     <>
@@ -107,17 +124,18 @@ const RegisterForm = () => {
                 />
               </CardContent>              
               <Button
+                type='submit'
                 variant="contained"
                 color="primary"
                 disabled={isLoading || isSubmitting}
                 fullWidth
               >
-                {isLoading ? 'Signing Up' : 'SignUp'}
+                {isLoading ? 'Signing Up...' : 'SignUp'}
               </Button>
               <h4><span>OR</span></h4>              
               <Button
-                href='/'
-                type="submit"
+                href='/login'
+                type="button"
                 variant="outlined"
                 color="primary"
                 disabled={isLoading || isSubmitting}

@@ -1,0 +1,1 @@
+export const ApiUrl = 'https://mock-api.arikmpt.com/api'

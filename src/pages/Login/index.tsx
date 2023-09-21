@@ -4,6 +4,8 @@ import { Button, TextField, Card, Typography, CardContent } from '@mui/material'
 import * as Yup from 'yup';
 import './login.css'
 import { useNavigate } from 'react-router-dom'
+import { ApiUrl } from '../../utils/api';
+
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -12,33 +14,52 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
+interface loginValue  {
+  email: string,
+  password: string
+}
 
-const LoginForm = ()=> {
+
+const LoginForm: React.FC = ()=> {
   const initialValues = {
     email: '',
     password: '',
   };
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
+  
 
-  const handleSubmit = async (values : unknown) => {
+  const handleSubmit = async (values: loginValue) => {
     setIsLoading(true);
 
-    const apiUrl = 'https://example.com/api/login';
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    });
+    const Url = ApiUrl + '/user/login';
+    try {
+      const response = await fetch(Url, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+      const data = await response.json()
+      console.log(response)
 
-    if (response.ok) {
-      alert('Login successful, redirect to homepage.');
-      navigate('/')
-    } else {
-      alert('Login failed. Please check your credentials.');
+      if (response.ok) {
+        alert('Login successful, redirect to homepage.');
+      
+      const token = data.data.token
+      localStorage.setItem('authToken', token)
+
+        navigate('/')
+      } else {
+        alert('Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      alert('An error occurred while processing your request. Please try again later.')
     }
+    
 
   };
 

@@ -1,2 +1,5 @@
 export { default as LoginForm } from './Login'
 export { default as RegisterForm } from './Register'
+export { default as AddCategory } from './AddCategory'
+export { default as EditCategory } from './EditCategory'
+export { default as Home } from './Home'
