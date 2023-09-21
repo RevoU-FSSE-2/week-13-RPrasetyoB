@@ -10,7 +10,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import "./home.css";
-// import { useNavigate } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { Edit } from "@mui/icons-material";
@@ -40,7 +39,7 @@ interface Category {
   is_active: boolean;
 }
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
     // const navigate = useNavigate()
     const [categories, setCategories] = useState<Category[]>([]);
 
@@ -117,4 +116,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default HomePage;
