@@ -34,7 +34,6 @@ const AddCategory: React.FC = () => {
     
     const handleSubmit = async (values: addCategory) => {
         setIsLoading(true);
-        console.log(status)
         let isStatus: boolean;
         if(status === 'true') {
           isStatus = true
@@ -46,31 +45,51 @@ const AddCategory: React.FC = () => {
             name: values.name,
             is_active: isStatus
         }
+        const newName = inputAddData.name
+        const url1 = ApiUrl + '/category';
+        const responseName = await fetch(url1, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+        });
+        const data = await responseName.json();
+        const existingCategoryNames = data.data.map((category: { name: string; }) => category.name);
 
+        if (existingCategoryNames.includes(newName)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Add new Category failed',
+            text: 'Category name already exists. Please choose a different name.',
+        });
+        setIsLoading(false);
+        } else {
         const Url = ApiUrl + "/category/create";
         const response = await fetch(Url, {
             method: "POST",
             headers: {
-                'Authorization': `Bearer ${token}`,
-                "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`,
+            "Content-Type": "application/json",
             },
             body: JSON.stringify(inputAddData),
         });
 
-        console.log(response)
         if (response.ok) {
             Swal.fire({
-                icon: 'success',
-                title: 'Add Category success',
-                text: 'Successfully adding category',
-              });
+            icon: 'success',
+            title: 'Add Category Success',
+            text: 'Successfully added category.',
+            });
             navigate("/");
         } else {
             Swal.fire({
-                icon: 'error',
-                title: 'Add Category Failed',
-                text: 'An error occurred during add. Please try again.',
-              });
+            icon: 'error',
+            title: 'Add Category Failed',
+            text: 'An error occurred during add. Please try again.',
+            });
+        }
+        setIsLoading(false);
         }
     };
 

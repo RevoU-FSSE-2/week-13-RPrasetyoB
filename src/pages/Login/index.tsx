@@ -41,7 +41,6 @@ const LoginForm: React.FC = ()=> {
         body: JSON.stringify(values),
       });
       const data = await response.json()
-      console.log(response)
 
       if (response.ok) {
         Swal.fire('Login successful', 'success');

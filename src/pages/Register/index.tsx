@@ -48,7 +48,6 @@ const RegisterForm: React.FC = () => {
         },
         body: JSON.stringify(values),
       });
-      console.log(response)
   
       if (response.ok) {
         Swal.fire({
@@ -149,7 +148,7 @@ const RegisterForm: React.FC = () => {
               </Button>
               <h4 className='h4' style={{color:'grey', fontSize: 18}}>or</h4>              
               <Button
-                href='/login'
+                onClick={()=> navigate('/login')}
                 type="button"
                 variant="outlined"
                 color="primary"

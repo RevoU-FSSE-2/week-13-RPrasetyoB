@@ -22,7 +22,6 @@ const EditCategory: React.FC = () => {
   const token = localStorage.getItem('authToken');
   const { id } = useParams();
   const Url1 = ApiUrl + `/category/${id}`;
-  console.log(Url1);
   
   const [category, setCategory] = useState<EditCategory | null>(null);
   const initialValues = {
@@ -82,9 +81,9 @@ const EditCategory: React.FC = () => {
       });
       Swal.fire({
         icon: 'success',
-        title: 'Edit Category success',
-        text: 'Successfully Edit category',
-      });
+        title: 'Add Category Success',
+        text: 'Successfully added category.',
+        });
       navigate('/');
     } catch (error) {
       console.log(error);
