@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { ApiUrl } from "../../utils/api";
 import { styled } from "@mui/material/styles";
@@ -15,7 +16,6 @@ import Swal from "sweetalert2";
 import TablePagination from "@mui/material/TablePagination";
 import TableFooter from "@mui/material/TableFooter";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
 import "./home.css";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -52,8 +52,9 @@ const HomePage: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [filter, setFilter] = useState<string>(""); // Step 2: Initialize filter state
 
-  const fetchCategory = async ()=> {
+  const fetchCategory = async () => {
     try {
       if (!token) {
         return;
@@ -112,7 +113,13 @@ const HomePage: React.FC = () => {
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const categoriesToDisplay = categories.slice(startIndex, endIndex);
+
+  // Step 3: Update the categoriesToDisplay array based on the filter criteria
+  const filteredCategories = categories.filter((category) =>
+    category.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  const categoriesToDisplay = filteredCategories.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -124,12 +131,13 @@ const HomePage: React.FC = () => {
         <Button size="large" onClick={() => navigate("/add")}>
           Add category
         </Button>
-        <Button
-          variant="outlined"
-          color="error"
-          size="large"
-          onClick={handleLogout}
-        >
+        <input
+          type="text"
+          placeholder="Filter by name / status"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)} // Step 2: Update filter state
+        />
+        <Button variant="outlined" color="error" size="large" onClick={handleLogout}>
           Log Out
         </Button>
       </div>
@@ -156,19 +164,13 @@ const HomePage: React.FC = () => {
                   <StyledTableCell component="th" scope="row">
                     {category.id}
                   </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {category.name}
-                  </StyledTableCell>
+                  <StyledTableCell align="center">{category.name}</StyledTableCell>
                   <StyledTableCell align="center">
                     {category.is_active ? "Active" : "Deactive"}
                   </StyledTableCell>
                   <StyledTableCell align="right">
-                    <Stack
-                      direction="row"
-                      justifyContent={"flex-end"}
-                      spacing={2}
-                    >
-                      <Button onClick={()=> navigate(`/edit/${category.id}`)} variant="outlined" startIcon={<Edit />}>
+                    <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
+                      <Button onClick={() => navigate(`/edit/${category.id}`)} variant="outlined" startIcon={<Edit />}>
                         Edit
                       </Button>
                       <Button
@@ -187,7 +189,7 @@ const HomePage: React.FC = () => {
           <TableFooter>
             <TableRow>
               <TablePagination
-                count={categories.length}
+                count={filteredCategories.length}
                 page={currentPage - 1}
                 rowsPerPage={ITEMS_PER_PAGE}
                 onPageChange={(e, page) => handlePageChange(page + 1)}

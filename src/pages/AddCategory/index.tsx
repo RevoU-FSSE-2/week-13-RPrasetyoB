@@ -139,6 +139,7 @@ const AddCategory: React.FC = () => {
                                     <Select
                                         label="Status"
                                         name="is_active"
+                                        placeholder={status}
                                         value={status}
                                         onChange={handleStatus}
                                     >
