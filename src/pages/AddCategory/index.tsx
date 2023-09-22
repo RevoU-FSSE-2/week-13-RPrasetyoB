@@ -25,6 +25,7 @@ const AddCategory: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const token = localStorage.getItem('authToken')
     const [status, setStatus] = useState(initialValues.is_active);
+    
     const handleStatus = (event: SelectChangeEvent) => {
       const newStatus = event.target.value as string;
       setStatus(newStatus);

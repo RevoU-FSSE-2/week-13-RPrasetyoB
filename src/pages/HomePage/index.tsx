@@ -110,11 +110,9 @@ const HomePage: React.FC = () => {
     }
   };
 
-  // Calculate the index range for the current page
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
-  // Filter categories to display only the ones for the current page
   const categoriesToDisplay = categories.slice(startIndex, endIndex);
 
   // const totalPages = Math.ceil(categories.length / ITEMS_PER_PAGE);
