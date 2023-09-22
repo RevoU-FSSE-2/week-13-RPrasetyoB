@@ -4,6 +4,7 @@ import { Button, TextField, Card, Typography, CardContent, Select, MenuItem, For
 import * as Yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { ApiUrl } from "../../utils/api";
+import Swal from "sweetalert2";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Category is required"),
@@ -79,7 +80,11 @@ const EditCategory: React.FC = () => {
         },
         body: JSON.stringify(inputAddData),
       });
-      
+      Swal.fire({
+        icon: 'success',
+        title: 'Edit Category success',
+        text: 'Successfully Edit category',
+      });
       navigate('/');
     } catch (error) {
       console.log(error);
