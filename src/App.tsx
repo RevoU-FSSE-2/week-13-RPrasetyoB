@@ -1,19 +1,51 @@
 import { LoginForm, RegisterForm, AddCategory, EditCategory, HomePage } from './pages'
 import './App.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+// import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { PublicLayout } from './LayOut'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const App = () => {
   
+  const router = createBrowserRouter([
+    {
+      element: <PublicLayout />,
+      children: [
+        {
+          path: '/',
+          element: <HomePage />
+        },
+        {
+          path: '/add',
+          element: <AddCategory />
+        },
+        {
+          path: '/edit',
+          element: <EditCategory />
+        },
+      ]
+    },
+    {
+      element: <LoginForm />,
+      path: '/login'
+    },
+    {
+      path: '/register',
+      element: <RegisterForm />
+    }
+  ])
+
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/login' element={<LoginForm />} />
-        <Route path='/register' element={<RegisterForm />} />
-        <Route path='/add' element={<AddCategory />} />
-        <Route path='/edit' element={<EditCategory />} />        
-      </Routes>
-    </BrowserRouter>
+    <RouterProvider router={router} />
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route path='/' element={<HomePage />} />
+    //     <Route path='/login' element={<LoginForm />} />
+    //     <Route path='/register' element={<RegisterForm />} />
+    //     <Route path='/add' element={<AddCategory />} />
+    //     <Route path='/edit' element={<EditCategory />} />        
+    //   </Routes>
+    // </BrowserRouter>
   )
 }
 

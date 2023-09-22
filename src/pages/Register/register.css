@@ -1,0 +1,22 @@
+.form-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+}
+
+.h4 {
+    padding-top: 10px;
+    text-align: center;
+    width: 100%; 
+    text-align: center; 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+}
+
+.span {
+    background:#fff; 
+    padding:0 10px;
+}

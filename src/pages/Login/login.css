@@ -7,18 +7,16 @@
     padding: 20px;
 }
 
-Card h4 {
+.h4 {
     padding-top: 10px;
     text-align: center;
-    color: grey;
     width: 100%; 
     text-align: center; 
-    border-bottom: 0.5px solid grey; 
     line-height: 0.1em;
     margin: 10px 0 20px; 
 }
 
-h4 span {
+.span {
     background:#fff; 
     padding:0 10px;
 }

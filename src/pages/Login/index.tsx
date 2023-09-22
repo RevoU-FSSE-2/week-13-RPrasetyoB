@@ -7,19 +7,16 @@ import { useNavigate } from 'react-router-dom'
 import { ApiUrl } from '../../utils/api';
 import Swal from 'sweetalert2';
 
-
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
     .required('Email is required'),
   password: Yup.string().required('Password is required'),
 });
-
 interface loginValue  {
   email: string,
   password: string
 }
-
 
 const LoginForm: React.FC = ()=> {
   const initialValues = {
@@ -47,7 +44,7 @@ const LoginForm: React.FC = ()=> {
       console.log(response)
 
       if (response.ok) {
-        Swal.fire('Login successful, redirect to homepage.', 'success');
+        Swal.fire('Login successful', 'success');
       
       const token = data.data.token
       localStorage.setItem('authToken', token)
@@ -119,8 +116,8 @@ const LoginForm: React.FC = ()=> {
                 fullWidth
               >
                 {isLoading ? 'Logging in...' : 'Login'}
-              </Button>
-              <h4><span>or</span></h4>
+              </Button>              
+                <h4 className='h4' style={{color:'grey', fontSize: 18}}>or</h4>
               <Button
                 href='/register'
                 variant="outlined"

@@ -12,9 +12,9 @@ const validationSchema = Yup.object().shape({
         .email('Invalid email')
         .required('Email is required'),
     password: Yup.string().min(5, 'Password must be at least 5 characters long')
-        // .matches(
-        //   /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{5,})/,
-        //   "Must Contain 5 Characters, One Alphabet and One Number")
+        .matches(
+          /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.{5,})/,
+          "Must Contain 5 Characters, One Alphabet and One Number")
         .required('Password is required')
 });
 
@@ -132,7 +132,7 @@ const RegisterForm: React.FC = () => {
               >
                 {isLoading ? 'Signing Up...' : 'SignUp'}
               </Button>
-              <h4><span>OR</span></h4>              
+              <h4 className='h4' style={{color:'grey', fontSize: 18}}>or</h4>              
               <Button
                 href='/login'
                 type="button"
