@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { ApiUrl } from "../../utils/api";
 import { SelectChangeEvent } from '@mui/material/Select'
+import Swal from "sweetalert2";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Category is required"),
@@ -58,10 +59,18 @@ const AddCategory: React.FC = () => {
 
         console.log(response)
         if (response.ok) {
-            alert("Add new category success");
+            Swal.fire({
+                icon: 'success',
+                title: 'Add Category success',
+                text: 'Successfully adding category',
+              });
             navigate("/");
         } else {
-            alert("Add category failed");
+            Swal.fire({
+                icon: 'error',
+                title: 'Add Category Failed',
+                text: 'An error occurred during add. Please try again.',
+              });
         }
     };
 

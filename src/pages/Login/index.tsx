@@ -51,11 +51,19 @@ const LoginForm: React.FC = ()=> {
 
         navigate('/')
       } else {
-        alert('Login failed. Please check your credentials.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Failed',
+          text: 'Login failed. Please check your credentials.',
+        });
       }
     } catch (error) {
       console.error('An error occurred:', error);
-      alert('An error occurred while processing your request. Please try again later.')
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: 'An error occurred while processing your request. Please try again later.',
+      });
     }
     
 

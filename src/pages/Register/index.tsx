@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
 import './register.css'
 import { ApiUrl } from '../../utils/api';
+import Swal from 'sweetalert2';
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is Required'),
@@ -50,10 +51,19 @@ const RegisterForm: React.FC = () => {
       console.log(response)
   
       if (response.ok) {
-        alert('Register successful, redirect to loginpage.');
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration',
+          text: 'Registered successfully, redirect to loginpage.',
+        });
+        
         navigate('/login')
       } else {
-        alert('Registration failed. Please check your data.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration failure',
+          text: 'Registration failed. Please check your data.',
+        });
       }
       
       setIsLoading(false);
@@ -61,6 +71,11 @@ const RegisterForm: React.FC = () => {
     } catch (error) {
       console.error('An error occurred:', error);
       alert('An error occurred while processing your request. Please try again later.')
+      Swal.fire({
+        icon: 'error',
+        title: 'Registration failure',
+        text: 'An error occurred while processing your request. Please try again later.',
+      });
     }
   }     
 
