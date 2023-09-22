@@ -19,7 +19,7 @@ const App = () => {
           element: <AddCategory />
         },
         {
-          path: '/edit',
+          path: '/edit/:id',
           element: <EditCategory />
         },
       ]

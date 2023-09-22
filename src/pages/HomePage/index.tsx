@@ -112,10 +112,7 @@ const HomePage: React.FC = () => {
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-
   const categoriesToDisplay = categories.slice(startIndex, endIndex);
-
-  // const totalPages = Math.ceil(categories.length / ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -171,7 +168,7 @@ const HomePage: React.FC = () => {
                       justifyContent={"flex-end"}
                       spacing={2}
                     >
-                      <Button href="/edit" variant="outlined" startIcon={<Edit />}>
+                      <Button onClick={()=> navigate(`/edit/${category.id}`)} variant="outlined" startIcon={<Edit />}>
                         Edit
                       </Button>
                       <Button
