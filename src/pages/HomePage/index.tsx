@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { ApiUrl } from "../../utils/api";
 import { styled } from "@mui/material/styles";
@@ -9,14 +8,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import "./home.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Stack from "@mui/material/Stack";
 import { Edit } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import TablePagination from "@mui/material/TablePagination";
 import TableFooter from "@mui/material/TableFooter";
+import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import "./home.css";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -53,7 +53,7 @@ const HomePage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const fetchCategory = async () => {
+  const fetchCategory = async ()=> {
     try {
       if (!token) {
         return;
