@@ -119,7 +119,7 @@ const LoginForm: React.FC = ()=> {
               </Button>              
                 <h4 className='h4' style={{color:'grey', fontSize: 18}}>or</h4>
               <Button
-                href='/register'
+                onClick={()=> navigate('/register')}
                 variant="outlined"
                 color="primary"
                 disabled={isLoading || isSubmitting}
