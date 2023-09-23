@@ -79,7 +79,9 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchCategory();
+    (async()=> {
+      await fetchCategory();
+    })()
   }, []);
 
   const handleLogout = () => {
