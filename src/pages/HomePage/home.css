@@ -15,3 +15,10 @@ html {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.filter select{
+    height: 90%;
+}
+
+.filter input{
+    height: 90%;
+}

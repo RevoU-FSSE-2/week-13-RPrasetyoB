@@ -52,7 +52,8 @@ const HomePage: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [filter, setFilter] = useState<string>(""); // Step 2: Initialize filter state
+  const [filter, setFilter] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("")
 
   const fetchCategory = async () => {
     try {
@@ -116,10 +117,14 @@ const HomePage: React.FC = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
-  // Step 3: Update the categoriesToDisplay array based on the filter criteria
+ 
+  // const filteredCategories = categories.filter((category) =>
+  //   category.name.toLowerCase().includes(filter.toLowerCase())
+  // );
   const filteredCategories = categories.filter((category) =>
-    category.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  category.name.toLowerCase().includes(filter.toLowerCase()) &&
+  (statusFilter === "" || category.is_active === (statusFilter === "Active"))
+);
 
   const categoriesToDisplay = filteredCategories.slice(startIndex, endIndex);
 
@@ -133,12 +138,22 @@ const HomePage: React.FC = () => {
         <Button size="large" onClick={() => navigate("/add")}>
           Add category
         </Button>
-        <input
-          type="text"
-          placeholder="Filter by name / status"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)} // Step 2: Update filter state
-        />
+        <div className="filter">
+          <input
+            type="text"
+            placeholder="Filter by name"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)} // Step 2: Update filter state
+          />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">All</option>
+            <option value="Active">Active</option>
+            <option value="Deactive">Deactive</option>
+          </select>
+        </div>
         <Button variant="outlined" color="error" size="large" onClick={handleLogout}>
           Log Out
         </Button>
