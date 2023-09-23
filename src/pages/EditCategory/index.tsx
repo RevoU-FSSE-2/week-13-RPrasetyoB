@@ -141,6 +141,7 @@ const EditCategory: React.FC = () => {
                     name="is_active"
                     onChange={handleStatus}
                     value={status}
+                    required
                   >
                     <MenuItem value=""><em>{category?.is_active ? "Active (curent)" : "Deactive (curent)"}</em></MenuItem>
                     <MenuItem value={"true"}>Active</MenuItem>

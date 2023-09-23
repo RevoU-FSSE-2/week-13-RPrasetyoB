@@ -142,6 +142,7 @@ const AddCategory: React.FC = () => {
                                         placeholder={status}
                                         value={status}
                                         onChange={handleStatus}
+                                        required
                                     >
                                         <MenuItem value={"true"}>Active</MenuItem>
                                         <MenuItem value={"false"}>Deactive</MenuItem>
