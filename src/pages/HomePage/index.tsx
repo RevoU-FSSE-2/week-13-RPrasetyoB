@@ -55,6 +55,7 @@ const HomePage: React.FC = () => {
   const [filter, setFilter] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("")
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchCategory = async () => {
     try {
       if (!token) {
@@ -79,9 +80,9 @@ const HomePage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchCategory();   
-  }, []);
+  useEffect(() => {  
+        fetchCategory();
+  }, [fetchCategory]);
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");

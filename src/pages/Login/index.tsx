@@ -48,7 +48,7 @@ const LoginForm: React.FC = ()=> {
       const token = data.data.token
       localStorage.setItem('authToken', token)
 
-        navigate('/')
+        window.location.replace('/')
       } else {
         Swal.fire({
           icon: 'error',
