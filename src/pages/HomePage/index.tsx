@@ -80,9 +80,7 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    (async()=> {
-      await fetchCategory();
-    })()
+    fetchCategory();   
   }, []);
 
   const handleLogout = () => {
