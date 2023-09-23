@@ -116,9 +116,6 @@ const HomePage: React.FC = () => {
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
  
-  // const filteredCategories = categories.filter((category) =>
-  //   category.name.toLowerCase().includes(filter.toLowerCase())
-  // );
   const filteredCategories = categories.filter((category) =>
   category.name.toLowerCase().includes(filter.toLowerCase()) &&
   (statusFilter === "" || category.is_active === (statusFilter === "Active"))
@@ -141,7 +138,7 @@ const HomePage: React.FC = () => {
             type="text"
             placeholder="Filter by name"
             value={filter}
-            onChange={(e) => setFilter(e.target.value)} // Step 2: Update filter state
+            onChange={(e) => setFilter(e.target.value)}
           />
           <select
             value={statusFilter}
