@@ -13,7 +13,7 @@ This project is a simple web application built with React that allows users to m
 - React JS
 - Typescript
 - vite
-- Ant design
+- Material UI
 - Formik
 - Yup
 
