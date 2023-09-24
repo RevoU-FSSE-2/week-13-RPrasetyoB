@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthChecker } from "../../hook";
 import "./home.css";
 
-
+// table style //
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -33,7 +33,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     
   }
 }));
-
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
@@ -43,6 +42,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+// interface //
 interface Category {
   id: string;
   name: string;
@@ -50,25 +50,30 @@ interface Category {
 }
 
 const HomePage: React.FC = () => {
+
+  // navigation //
   const navigate = useNavigate();
+
+  // auth checker //
   const token = localStorage.getItem('authToken')
   useAuthChecker(token)
+
+  // useState //
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
   const [filter, setFilter] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("")
 
+  // fetching //
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchCategory = async () => {
     try {
-
       const Url = ApiUrl + "/category";
       const response = await fetch(Url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
       if (response.ok) {
         const data = await response.json();
         setCategories(data.data);
@@ -79,17 +84,18 @@ const HomePage: React.FC = () => {
       console.error(error);
     }
   };
-
   useEffect(() => {  
         fetchCategory();
   }, [fetchCategory]);
 
+  // log out //
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     navigate("/login");
     Swal.fire("Logged Out");
   };
 
+  // Delete //
   const DeleteCategory = async (id: string) => {
     try {
       const Url = ApiUrl + `/category/${id}`;
@@ -113,7 +119,7 @@ const HomePage: React.FC = () => {
     }
   };
 
-// pagination //
+// filter and pagination //
   const ITEMS_PER_PAGE = 5;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE; 
@@ -163,7 +169,7 @@ const HomePage: React.FC = () => {
               <StyledTableCell align="left">ID</StyledTableCell>
               <StyledTableCell align="center">Name</StyledTableCell>
               <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">&emsp;&emsp;&emsp;Action</StyledTableCell>
+              <StyledTableCell align="center">Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
