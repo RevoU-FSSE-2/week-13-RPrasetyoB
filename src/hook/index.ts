@@ -1,1 +1,1 @@
-export {default as useFetchData} from './FetchData'
+export {default as useAuthChecker} from './useAuthChecker'

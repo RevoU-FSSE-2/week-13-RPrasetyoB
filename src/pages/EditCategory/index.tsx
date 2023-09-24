@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { ApiUrl } from "../../utils/api";
 import Swal from "sweetalert2";
+import { useAuthChecker } from "../../hook";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Category is required"),
@@ -19,7 +20,8 @@ interface EditCategory {
 
 const EditCategory: React.FC = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('authToken');
+  const token = localStorage.getItem('authToken')
+  useAuthChecker(token)
   const { id } = useParams();
   const Url1 = ApiUrl + `/category/${id}`;
   

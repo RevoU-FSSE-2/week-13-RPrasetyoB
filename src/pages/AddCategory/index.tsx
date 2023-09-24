@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ApiUrl } from "../../utils/api";
 import { SelectChangeEvent } from '@mui/material/Select'
 import Swal from "sweetalert2";
+import { useAuthChecker } from "../../hook";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Category is required"),
@@ -23,8 +24,9 @@ const initialValues = {
 
 const AddCategory: React.FC = () => {
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
     const token = localStorage.getItem('authToken')
+    useAuthChecker(token)
+    const [isLoading, setIsLoading] = useState(false);
     const [status, setStatus] = useState(initialValues.is_active);
     
     const handleStatus = (event: SelectChangeEvent) => {
