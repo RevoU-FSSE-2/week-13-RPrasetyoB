@@ -7,7 +7,8 @@ This project is a simple web application built with React that allows users to m
 - Delete: Remove categories from the list.
 
 ## Website Appeareance
-![Screenshot_12](https://github.com/RevoU-FSSE-2/week-13-RPrasetyoB/assets/129088807/81c4dcd7-fcc9-477b-b22e-8ba9368515fe)
+![Screenshot_12](https://github.com/RevoU-FSSE-2/week-13-RPrasetyoB/assets/129088807/123833ed-9818-47db-b367-4f9a41165059)
+
 
 ## Ingredient
 - React JS
