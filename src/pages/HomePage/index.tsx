@@ -16,7 +16,9 @@ import Swal from "sweetalert2";
 import TablePagination from "@mui/material/TablePagination";
 import TableFooter from "@mui/material/TableFooter";
 import { useNavigate } from "react-router-dom";
+import { useAuthChecker } from "../../hook";
 import "./home.css";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -25,7 +27,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    padding: "5px 16px"
   },
+  "root": {
+    
+  }
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -43,13 +49,10 @@ interface Category {
   is_active: boolean;
 }
 
-const token = localStorage.getItem("authToken");
-
-const ITEMS_PER_PAGE = 5;
-
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-
+  const token = localStorage.getItem('authToken')
+  useAuthChecker(token)
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
   const [filter, setFilter] = useState<string>("");
@@ -58,9 +61,6 @@ const HomePage: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchCategory = async () => {
     try {
-      if (!token) {
-        return;
-      }
 
       const Url = ApiUrl + "/category";
       const response = await fetch(Url, {
@@ -113,24 +113,21 @@ const HomePage: React.FC = () => {
     }
   };
 
+// pagination //
+  const ITEMS_PER_PAGE = 5;
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-
- 
+  const endIndex = startIndex + ITEMS_PER_PAGE; 
   const filteredCategories = categories.filter((category) =>
   category.name.toLowerCase().includes(filter.toLowerCase()) &&
-  (statusFilter === "" || category.is_active === (statusFilter === "Active"))
-);
-
+  (statusFilter === "" || category.is_active === (statusFilter === "Active")));
   const categoriesToDisplay = filteredCategories.slice(startIndex, endIndex);
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   return (
-    <div className="home-page">
-      <div className="btn-upper">
+    <div className="home-page" >
+      <div className="btn-upper" >
         <Button size="large" onClick={() => navigate("/add")}>
           Add category
         </Button>
@@ -150,12 +147,17 @@ const HomePage: React.FC = () => {
             <option value="Deactive">Deactive</option>
           </select>
         </div>
-        <Button variant="outlined" color="error" size="large" onClick={handleLogout}>
-          Log Out
-        </Button>
+        <div className="user-control">
+          <Button variant="contained" size="medium" onClick={handleLogout} className="btn-profile">
+            Profile
+          </Button>
+          <Button variant="outlined" color="error" size="medium" onClick={handleLogout} className="btn-logout">
+            Log Out
+          </Button>
+        </div>
       </div>
-      <TableContainer component={Paper} style={{ width: 800 }}>
-        <Table sx={{ minWidth: 400 }} aria-label="customized table">
+      <TableContainer component={Paper} style={{width: 700}}>
+        <Table aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell align="left">ID</StyledTableCell>
@@ -173,25 +175,33 @@ const HomePage: React.FC = () => {
               </TableRow>
             ) : (
               categoriesToDisplay.map((category) => (
-                <StyledTableRow key={category.id}>
-                  <StyledTableCell component="th" scope="row">
-                    {category.id}
+                <StyledTableRow key={category.id} className="tr">
+                  <StyledTableCell component="th" scope="row" className="td">
+                    {category.id.slice(20,36)}
                   </StyledTableCell>
-                  <StyledTableCell align="center">{category.name}</StyledTableCell>
+                  <StyledTableCell align="center" className="td name-cell">
+                    {category.name}
+                  </StyledTableCell>
                   <StyledTableCell align="center">
                     {category.is_active ? "Active" : "Deactive"}
                   </StyledTableCell>
-                  <StyledTableCell align="right">
+                  <StyledTableCell align="right" className="td">
                     <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
-                      <Button onClick={() => navigate(`/edit/${category.id}`)} variant="outlined" startIcon={<Edit />}>
-                        Edit
+                      <Button
+                        onClick={() => navigate(`/edit/${category.id}`)}
+                        variant="outlined" startIcon={<Edit />}
+                        className="btn-edit"
+                        size="small">
+                          edit                 
                       </Button>
                       <Button
+                        color="error"
                         variant="contained"
                         onClick={() => DeleteCategory(category.id)}
                         endIcon={<DeleteIcon />}
-                      >
-                        Del
+                        size="small"
+                        className="btn-del">
+                          del                       
                       </Button>
                     </Stack>
                   </StyledTableCell>

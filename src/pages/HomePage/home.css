@@ -2,23 +2,47 @@ html {
     background-color: rgb(223, 222, 222);
 }
 
+body {
+    height: 100%;
+}
+
 .btn-upper{
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
     margin-right: 5px;
+    height: 30px;
 }
 
 .home-page {
     position: fixed;
     top:50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -45%);
 }
+
 .filter select{
     height: 90%;
 }
 
 .filter input{
     height: 90%;
+}
+
+.user-control {
+    display: flex;
+    gap: 5px;
+}
+
+.user-control .btn-logout {
+    padding: 0 5px;
+}
+
+.name-cell {
+    max-width: 200px;
+    overflow: auto;
+}
+
+.btn-del {
+    padding: 1px;
 }

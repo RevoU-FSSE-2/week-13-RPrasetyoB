@@ -3,6 +3,7 @@ import React from "react";
 const Navbar: React.FC= ()=> {
     const navbarStyle = {
         fontSize: 20,
+        height: 60,
       };
 
     return (
