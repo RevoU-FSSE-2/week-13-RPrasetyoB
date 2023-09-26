@@ -11,7 +11,7 @@ const Navbar: React.FC= ()=> {
             <div className="navbar">
                 <div className="container-fluid">
                     <span className="navbar-text text">
-                        RPB Week 13 Assignment
+                        RPB Week13 Assignment
                     </span>
                 </div>
             </div>

@@ -20,19 +20,6 @@ import { useAuthChecker } from "../../hook";
 import "./home.css";
 
 // table style //
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    padding: "5px 16px"
-  },
-  "root": {
-    
-  }
-}));
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
@@ -42,11 +29,26 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    padding: "8px 16px"
+  },
+}));
+
 // interface //
 interface Category {
   id: string;
   name: string;
   is_active: boolean;
+}
+
+interface User {
+  id: string
 }
 
 const HomePage: React.FC = () => {
@@ -61,6 +63,7 @@ const HomePage: React.FC = () => {
   // useState //
   const [currentPage, setCurrentPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [userProfile, setUserProfile] = useState<User | null>(null)
   const [filter, setFilter] = useState<string>("");
   const [statusFilter, setStatusFilter] = useState<string>("")
 
@@ -94,6 +97,31 @@ const HomePage: React.FC = () => {
     navigate("/login");
     Swal.fire("Logged Out");
   };
+
+  //fetch user
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchUser = async ()=> {
+    try {
+      const Url = ApiUrl + '/user/profile'
+      const response = await fetch(Url, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      if(response.ok){
+        const data = await response.json()
+        console.log(data.data);        
+        setUserProfile(data.data)
+      }
+    } catch (error) {
+      console.error(error);      
+    }
+  }
+  useEffect(() => {  
+    fetchUser();
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   // Delete //
   const DeleteCategory = async (id: string) => {
@@ -133,101 +161,103 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-page" >
-      <div className="btn-upper" >
-        <Button size="large" onClick={() => navigate("/add")}>
-          Add category
-        </Button>
-        <div className="filter">
-          <input
-            type="text"
-            placeholder="Filter by name"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="">All</option>
-            <option value="Active">Active</option>
-            <option value="Deactive">Deactive</option>
-          </select>
-        </div>
-        <div className="user-control">
-          <Button variant="contained" size="medium" onClick={handleLogout} className="btn-profile">
-            Profile
+      <div className="home-body">
+        <div className="btn-upper" >
+          <Button size="large" onClick={() => navigate("/add")}>
+            Add category
           </Button>
-          <Button variant="outlined" color="error" size="medium" onClick={handleLogout} className="btn-logout">
-            Log Out
-          </Button>
+          <div className="filter">
+            <input
+              type="text"
+              placeholder="Filter by name"
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+            >
+              <option value="">All</option>
+              <option value="Active">Active</option>
+              <option value="Deactive">Deactive</option>
+            </select>
+          </div>
+          <div className="user-control">
+            <Button variant="contained" size="medium" onClick={() => navigate(`/profile/:${userProfile?.id}`)} className="btn-profile">
+              Profile
+            </Button><Button variant="outlined" color="error" size="medium" onClick={handleLogout} className="btn-logout">
+              Log Out
+            </Button>         
+          </div>
         </div>
-      </div>
-      <TableContainer component={Paper} style={{width: 700}}>
-        <Table aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell align="left">ID</StyledTableCell>
-              <StyledTableCell align="center">Name</StyledTableCell>
-              <StyledTableCell align="center">Status</StyledTableCell>
-              <StyledTableCell align="center">Action</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {categoriesToDisplay.length === 0 ? (
+        <TableContainer component={Paper}>
+          <Table aria-label="customized table">
+            <TableHead>
               <TableRow>
-                <StyledTableCell colSpan={4} align="center">
-                  No data
-                </StyledTableCell>
+                <StyledTableCell align="left">ID</StyledTableCell>
+                <StyledTableCell align="center">Name</StyledTableCell>
+                <StyledTableCell align="center">Status</StyledTableCell>
+                <StyledTableCell align="center">Action</StyledTableCell>
               </TableRow>
-            ) : (
-              categoriesToDisplay.map((category) => (
-                <StyledTableRow key={category.id} className="tr">
-                  <StyledTableCell component="th" scope="row" className="td">
-                    {category.id.slice(20,36)}
+            </TableHead>
+            <TableBody>
+              {categoriesToDisplay.length === 0 ? (
+                <TableRow>
+                  <StyledTableCell colSpan={4} align="center">
+                    No data
                   </StyledTableCell>
-                  <StyledTableCell align="center" className="td name-cell">
-                    {category.name}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    {category.is_active ? "Active" : "Deactive"}
-                  </StyledTableCell>
-                  <StyledTableCell align="right" className="td">
-                    <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
-                      <Button
-                        onClick={() => navigate(`/edit/${category.id}`)}
-                        variant="outlined" startIcon={<Edit />}
-                        className="btn-edit"
-                        size="small">
-                          edit                 
-                      </Button>
-                      <Button
-                        color="error"
-                        variant="contained"
-                        onClick={() => DeleteCategory(category.id)}
-                        endIcon={<DeleteIcon />}
-                        size="small"
-                        className="btn-del">
-                          del                       
-                      </Button>
-                    </Stack>
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))
-            )}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                count={filteredCategories.length}
-                page={currentPage - 1}
-                rowsPerPage={ITEMS_PER_PAGE}
-                onPageChange={(e, page) => handlePageChange(page + 1)}
-                rowsPerPageOptions={[]}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
+                </TableRow>
+              ) : (
+                categoriesToDisplay.map((category) => (
+                  <StyledTableRow key={category.id} className="tr">
+                    <StyledTableCell component="th" scope="row" className="td">
+                      {category.id.slice(20,36)}
+                    </StyledTableCell>
+                    <StyledTableCell align="center" className="td name-cell">
+                      {category.name}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {category.is_active ? "Active" : "Deactive"}
+                    </StyledTableCell>
+                    <StyledTableCell align="right" className="td">
+                      <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
+                        <Button
+                          onClick={() => navigate(`/edit/${category.id}`)}
+                          variant="outlined" startIcon={<Edit />}
+                          className="btn-edit"
+                          size="small"
+                          style={{height: 25}}>
+                            edit                 
+                        </Button>
+                        <Button
+                          color="error"
+                          variant="contained"
+                          onClick={() => DeleteCategory(category.id)}
+                          endIcon={<DeleteIcon />}
+                          size="small"
+                          style={{height: 25}}>
+                            del                       
+                        </Button>
+                      </Stack>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))
+              )}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  count={filteredCategories.length}
+                  page={currentPage - 1}
+                  rowsPerPage={ITEMS_PER_PAGE}
+                  onPageChange={(e, page) => handlePageChange(page + 1)}
+                  rowsPerPageOptions={[]}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 };
